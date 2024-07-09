@@ -33,6 +33,17 @@ export function getById(req, res) {
     res.status(400).json({ message: "Không nhận được id" });
   }
 }
+
+// [GET] /product
+export function getAll(req, res) {
+  Product.find()
+  .then((data) => {
+    res.status(200).json(data);
+  })
+  .catch(() => {
+    res.status(500).json({ message: "Có lỗi khi lấy dữ liệu" });
+  });
+}
 //[POST] /product
 export function insert(req, res) {
   const product = req.body;

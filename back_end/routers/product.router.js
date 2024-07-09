@@ -6,9 +6,11 @@ import {
   update,
   remove,
   getProductByCateId,
+  getAll,
 } from "../controllers/product.controller.js";
 
 router.get("/:id", getById);
+router.get("/", getAll);
 router.post("/", insert);
 router.put("/:id", update);
 router.delete("/:id", remove);
