@@ -10,7 +10,7 @@ app.use(cors());
 
 async function connectMongoose() {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/asm_react_ts");
+    await mongoose.connect("mongodb+srv://phamhoaithuong2106:IsyMTi6QegnagZLU@cluster0.nlinvnx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
     console.log("Connected to Mongoose!");
   } catch (error) {
     console.log("Can't connect to Mongoose");
