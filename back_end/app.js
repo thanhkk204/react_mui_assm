@@ -13,6 +13,7 @@ async function connectMongoose() {
     await mongoose.connect("mongodb+srv://phamhoaithuong2106:IsyMTi6QegnagZLU@cluster0.nlinvnx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
     console.log("Connected to Mongoose!");
   } catch (error) {
+    console.log(error)
     console.log("Can't connect to Mongoose");
   }
 }

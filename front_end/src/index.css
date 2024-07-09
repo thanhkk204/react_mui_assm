@@ -1,0 +1,41 @@
+
+/* Swimper */
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  /* text-align: center; */
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  border-radius: 10px;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.activeLink{
+   text-decoration: none;
+   color: #1094f4;
+   font-size: 16px;
+}
+.unActiveLink{
+   text-decoration: none;
+   color: #757575;
+   font-size: 14px;
+}

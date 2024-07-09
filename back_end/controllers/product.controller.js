@@ -26,8 +26,8 @@ export function getById(req, res) {
       .then((data) => {
         res.status(200).json(data);
       })
-      .catch(() => {
-        res.status(400).json({ message: "Không tìm thấy sản phẩm" });
+      .catch((err) => {
+       res.status(400).json({erorr: err, message: "Không tìm thấy sản phẩm" });
       });
   } else {
     res.status(400).json({ message: "Không nhận được id" });
@@ -40,7 +40,8 @@ export function getAll(req, res) {
   .then((data) => {
     res.status(200).json(data);
   })
-  .catch(() => {
+  .catch((err) => {
+    console.log(err)
     res.status(500).json({ message: "Có lỗi khi lấy dữ liệu" });
   });
 }
