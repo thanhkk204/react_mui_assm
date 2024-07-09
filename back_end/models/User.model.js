@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 function validateEmail(textEmail) {
   return /^\S+@\S+\.\S+$/.test(textEmail);
 }
@@ -6,7 +7,11 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "Không được để trống Name"],
+      lowercase: true,
+      trim: true,
+      minLength: [3, "Cần nhập tối thiểu 3 ký tự"],
+      maxLength: [10, "Cần nhập tối đa 10 ký tự"],
     },
     email: {
       type: String,
@@ -26,10 +31,7 @@ const userSchema = new mongoose.Schema(
       default: "member",
     },
   },
-  {
-    timestamps: true,
-    versionKey: false,
-  }
+  { timestamps: true }
 );
 
 export default mongoose.model("users", userSchema);

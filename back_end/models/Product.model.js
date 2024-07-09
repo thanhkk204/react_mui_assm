@@ -28,23 +28,12 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    startAt: {
-      type: Date,
-    },
-    endAt: {
-      type: Date,
-    },
-    bidTime: {
+    rating: {
       type: Number,
-    },
-    bidPriceMax: {
-      type: Number,
-      default: 0
-    },
-    bids: {
-      type: [Schema.Types.ObjectId],
-      ref: "bids",
-    },
+      default: 0,
+      min: 0,
+      max: 5,
+    }
   },
   { timestamps: true, versionKey: false }
 );
