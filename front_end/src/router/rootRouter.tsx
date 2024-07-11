@@ -4,7 +4,9 @@ import {
 import App from "../App";
 import ProductList from "../pages/ProductList";
 import ProductDetail from "../pages/ProductDetail";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "../pages/dashboard/Dashboard";
+import DashboardIndex from "../pages/dashboard/DashboardIndex/DashboardIndex";
+import ProductTable from "../pages/dashboard/ProductTable/ProductTable";
 
   const router = createBrowserRouter([
     {
@@ -24,6 +26,16 @@ import Dashboard from "../pages/Dashboard";
     {
       path: "/dashboard",
       element: <Dashboard/>,
+      children: [
+        {
+          path: "",
+          element: <DashboardIndex />,
+        },
+        {
+          path: "productTable",
+          element: <ProductTable />,
+        },
+      ]
     },
   ]);
 
