@@ -7,6 +7,7 @@ import ProductDetail from "../pages/ProductDetail";
 import Dashboard from "../pages/dashboard/Dashboard";
 import DashboardIndex from "../pages/dashboard/DashboardIndex/DashboardIndex";
 import ProductTable from "../pages/dashboard/ProductTable/ProductTable";
+import CreateProComponent from "../pages/dashboard/createProduct/CreateProComponent";
 
   const router = createBrowserRouter([
     {
@@ -34,6 +35,10 @@ import ProductTable from "../pages/dashboard/ProductTable/ProductTable";
         {
           path: "productTable",
           element: <ProductTable />,
+        },
+        {
+          path: "craeteProduct",
+          element: <CreateProComponent />,
         },
       ]
     },
