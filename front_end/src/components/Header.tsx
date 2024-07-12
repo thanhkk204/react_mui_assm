@@ -9,7 +9,6 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    Theme,
     Toolbar,
     Typography,
     useColorScheme,
