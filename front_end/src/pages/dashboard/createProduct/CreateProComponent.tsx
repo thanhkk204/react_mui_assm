@@ -1,11 +1,37 @@
-import { Container } from '@mui/material'
-import React from 'react'
+import { Container, Stack, Typography } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useLoading } from "../../../contexts/loading";
+import { ProductFormParams } from "../../../constants/type";
+import ProductForm from "../../../components/ProductForm";
 
-export default function CreateProComponent() {
+function AdminProductAdd() {
+  const nav = useNavigate();
+  const { setLoading } = useLoading();
+
+  const onSubmit = async (values: ProductFormParams) => {
+    try {
+      setLoading(true);
+      await axios.post("http://localhost:5000/product", values);
+      nav("/dashboard/productTable");
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <Container maxWidth="lg" sx={{ mt: 16 }}>
-
-      <div>CreateProComponent</div>
-    </Container>
-  )
+    <>
+      <Container>
+        <Stack gap={2}>
+          <Typography variant="h3" textAlign={"center"}>
+            Add Product
+          </Typography>
+          <ProductForm onSubmit={onSubmit} initialValues={{ isShow: true }} />
+        </Stack>
+      </Container>
+    </>
+  );
 }
+
+export default AdminProductAdd;

@@ -5,8 +5,8 @@ import Category from "../models/category.model.js";
 export function getProductByCateId(req, res) {
   const cateId = req.params.id;
   if (cateId) {
-    Product.find({ categoryId: cateId })
-      .populate("categoryId")
+    Product.find({ category: cateId })
+      .populate("category")
       .then((data) => {
         res.status(200).json(data);
       })
@@ -22,7 +22,6 @@ export function getById(req, res) {
   let id = req.params.id;
   if (id) {
     Product.findById(id)
-      .populate("categoryId")
       .then((data) => {
         res.status(200).json(data);
       })
@@ -39,6 +38,7 @@ export function getAll(req, res) {
   Product.find()
   .then((data) => {
     res.status(200).json(data);
+    // console.log(data)
   })
   .catch((err) => {
     console.log(err)
@@ -48,12 +48,15 @@ export function getAll(req, res) {
 //[POST] /product
 export function insert(req, res) {
   const product = req.body;
+  console.log('product', product)
   if (product != {}) {
     Product.create(product)
       .then((data) => {
         res.status(201).json(data);
+        // console.log('succesfully')
       })
-      .catch(() => {
+      .catch((err) => {
+        // console.log(err)
         res.status(500).json({ message: "Có lỗi khi thêm sản phẩm" });
       });
   } else {

@@ -61,7 +61,9 @@ export async function signup(req, res) {
 // [POST] user/signin
 export async function signin(req, res) {
   const data = req.body;
-  const userExist = await User.findOne({ email: data.username });
+  console.log('body', data)
+  const userExist = await User.findOne({ email: data.email });
+  console.log(userExist);
   if (!userExist) return res.status(400).json({ message: "Sai tài khoản" });
   const isCheck = await bcryptjs.compare(data.password, userExist.password);
   if (!isCheck) return res.status(400).json({ message: "Sai mật khẩu" });
@@ -71,6 +73,7 @@ export async function signin(req, res) {
     { expiresIn: "2h" }
   );
   console.log(token);
+
   if (token) {
     userExist.password = undefined;
     res.status(200).json({

@@ -1,31 +1,39 @@
-import { GridActionsCellItem, GridColDef, GridDeleteIcon } from '@mui/x-data-grid';
+import { GridActionsCellItem, GridColDef } from '@mui/x-data-grid';
+import GridDeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit'; // Đảm bảo rằng bạn đang sử dụng đúng biểu tượng edit
 import { ProductType } from '../../../constants/type';
 
-
 type Props = {
-    handleDelete:(_id: string)=> void
+    handleDelete: (_id: string) => void;
+    handleEdit: (_id: string) => void;
 }
 
-const columns = ({ handleDelete }: Props): GridColDef<ProductType>[] => [
-      { field: 'title', type: 'string' },
-      { field: 'price', type: 'number' },
-      { field: 'description', type: 'string', width: 320 },
-      { field: 'rating'},
-      { field: 'createdAt', type: 'string', width: 320 },
-     
-      {
+const columns = ({ handleDelete, handleEdit }: Props): GridColDef<ProductType>[] => [
+    { field: 'title', type: 'string', headerName: 'Title' },
+    { field: 'price', type: 'number', headerName: 'Price' },
+    { field: 'description', type: 'string', headerName: 'Description', width: 320 },
+    { field: 'image', type: 'string', headerName: 'Image', width: 150, renderCell: (params) => (
+        <img src={params.value} alt="Product" style={{ width: '100%', height: 'auto' }} />
+    )},
+    { field: 'categoryId', type: 'string', headerName: 'Category' },
+    {
         field: 'actions',
         type: 'actions',
-        width: 80,
+        headerName: 'Actions',
+        width: 120,
         getActions: (params) => [
-          <GridActionsCellItem
-            icon={<GridDeleteIcon />}
-            label="Delete"
-            onClick={()=>handleDelete(params.id as string)}
-          />,
+            <GridActionsCellItem
+                icon={<EditIcon />}
+                label="Edit"
+                onClick={() => handleEdit(params.id as string)}
+            />,
+            <GridActionsCellItem
+                icon={<GridDeleteIcon />}
+                label="Delete"
+                onClick={() => handleDelete(params.id as string)}
+            />,
         ],
-      },
-    ]
+    },
+]
 
-
-export default columns
+export default columns;

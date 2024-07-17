@@ -32,7 +32,7 @@ export const mainListItems = (
     </ListItemButton>
     </Link>
 
-    <Link to={'craeteProduct'} style={{textDecoration: 'none', color: 'black'}} >
+    <Link to={'createProduct'} style={{textDecoration: 'none', color: 'black'}} >
     <ListItemButton>
       <ListItemIcon>
         <AddIcon />

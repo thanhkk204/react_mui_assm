@@ -5,7 +5,7 @@ function validateEmail(textEmail) {
 }
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    username: {
       type: String,
       required: [true, "Không được để trống Name"],
       lowercase: true,

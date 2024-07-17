@@ -8,13 +8,15 @@ import {
   Experimental_CssVarsProvider as CssVarsProvider,
 } from '@mui/material/styles';
 import theme from './themeConfig/theme.ts'
-
+import { LoadingProvider } from './contexts/loading.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
       <CssVarsProvider theme={theme}>
         <CssBaseline />
-       <RouterProvider router={router} />
+        <LoadingProvider>
+          <RouterProvider router={router} />
+        </LoadingProvider>
       </CssVarsProvider>
   </React.StrictMode>,
 )
