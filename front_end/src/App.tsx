@@ -6,10 +6,13 @@ import { ToastContainer } from "react-toastify"
 
 
 import 'react-toastify/dist/ReactToastify.css';
+import { CartProvider } from "./context/CartProvider"
 
 
 const App = () => {
   return (
+    <CartProvider>
+
     <Box
     sx={{
       backgroundColor: theme => theme.palette.background.default,
@@ -48,6 +51,8 @@ pauseOnHover
 theme="colored"
 />
     </Box>
+    </CartProvider>
+
   )
 }
 export default App

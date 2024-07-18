@@ -6,7 +6,7 @@ export function getProductByCateId(req, res) {
   const cateId = req.params.id;
   if (cateId) {
     Product.find({ category: cateId })
-      .populate("category")
+      .populate("categoryId")
       .then((data) => {
         res.status(200).json(data);
       })
@@ -21,7 +21,7 @@ export function getProductByCateId(req, res) {
 export function getById(req, res) {
   let id = req.params.id;
   if (id) {
-    Product.findById(id)
+    Product.findById(id).populate('categoryId')
       .then((data) => {
         res.status(200).json(data);
       })

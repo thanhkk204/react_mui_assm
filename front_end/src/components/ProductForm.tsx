@@ -98,7 +98,7 @@ import { InputText } from "./elements/InputText";
                   return (
                     <FormControl fullWidth>
                       <InputLabel>categoryId</InputLabel>
-                      <Select  label="categoryId" {...input} error>
+                      <Select  label="categoryId" {...input} >
                         <MenuItem value="">Select</MenuItem>
                         <MenuItem value={"66860195be9e04f02ea662d6"}>
                           Thoi trang
