@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ProductFormParams, ProductType } from "../../../constants/type";
 import ProductForm from "../../../components/ProductForm";
+import { toast } from "react-toastify";
 
 function AdminProductEdit() {
   const nav = useNavigate();
@@ -27,6 +28,10 @@ function AdminProductEdit() {
   const onSubmit = async (values: ProductFormParams) => {
     try {
       await axios.put(`http://localhost:5000/product/${id}`, values);
+      toast.success('🦄 Thành công !', {
+        position: "top-right",
+        autoClose: 5000,
+        });
       nav("/dashboard/productTable");
     } catch (error) {}
   };

@@ -4,6 +4,7 @@ import { ValidationErrors } from "final-form";
 import { Field, Form } from "react-final-form";
 import isEmail from "validator/lib/isEmail";
 import { InputText } from "../components/elements/InputText";
+import { toast } from "react-toastify";
 
 type LoginFormParams = {
   email: string;
@@ -27,6 +28,10 @@ const Login = () => {
     try {
       const { data } = await axios.post("http://localhost:5000/auth/signin", values);
       console.log('login', data)
+      toast.success('🦄 Thành công !', {
+        position: "top-right",
+        autoClose: 5000,
+        });
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user)); // luu object
     } catch (error) {}

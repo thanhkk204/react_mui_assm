@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useLoading } from "../../../contexts/loading";
 import { ProductFormParams } from "../../../constants/type";
 import ProductForm from "../../../components/ProductForm";
+import { toast } from "react-toastify";
 
 function AdminProductAdd() {
   const nav = useNavigate();
@@ -13,6 +14,10 @@ function AdminProductAdd() {
     try {
       setLoading(true);
       await axios.post("http://localhost:5000/product", values);
+      toast.success('🦄 Thành công !', {
+        position: "top-right",
+        autoClose: 5000,
+        });
       nav("/dashboard/productTable");
     } catch (error) {
     } finally {

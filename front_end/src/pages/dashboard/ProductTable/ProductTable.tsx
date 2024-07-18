@@ -3,6 +3,7 @@ import TableComponent from "./TableComponent";
 import { ProductType } from "../../../constants/type";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { toast } from "react-toastify";
 
 export default function ProductTable() {
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -43,8 +44,21 @@ export default function ProductTable() {
         },
       });
       if (!res.ok) {
-        return alert("Can't delete product");
+        return  toast.error('🦄 Thất bại!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          });
       }
+      toast.success('🦄 Thành công !', {
+        position: "top-right",
+        autoClose: 5000,
+        });
       setProducts((preProduct) => [
         ...preProduct.filter((item) => item._id !== _id),
       ]);

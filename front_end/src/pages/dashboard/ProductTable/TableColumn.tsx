@@ -2,13 +2,14 @@ import { GridActionsCellItem, GridColDef } from '@mui/x-data-grid';
 import GridDeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit'; // Đảm bảo rằng bạn đang sử dụng đúng biểu tượng edit
 import { ProductType } from '../../../constants/type';
+import { Button } from '@mui/material';
 
 type Props = {
-    handleDelete: (_id: string) => void;
+    handleClickOpen: (_id: string) => void;
     handleEdit: (_id: string) => void;
 }
 
-const columns = ({ handleDelete, handleEdit }: Props): GridColDef<ProductType>[] => [
+const columns = ({ handleClickOpen, handleEdit }: Props): GridColDef<ProductType>[] => [
     { field: 'title', type: 'string', headerName: 'Title' },
     { field: 'price', type: 'number', headerName: 'Price' },
     { field: 'description', type: 'string', headerName: 'Description', width: 320 },
@@ -30,7 +31,7 @@ const columns = ({ handleDelete, handleEdit }: Props): GridColDef<ProductType>[]
             <GridActionsCellItem
                 icon={<GridDeleteIcon />}
                 label="Delete"
-                onClick={() => handleDelete(params.id as string)}
+                onClick={() => handleClickOpen(params.id as string)}
             />,
         ],
     },

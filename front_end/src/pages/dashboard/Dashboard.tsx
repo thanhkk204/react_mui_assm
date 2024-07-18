@@ -22,6 +22,8 @@ import Chart from "./Chart"
 import Deposits from "./Deposits"
 import Orders from "./Orders"
 import { Outlet } from "react-router-dom"
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify"
 
 function Copyright(props: any) {
   return (
@@ -172,6 +174,18 @@ export default function Dashboard() {
         >
           <Outlet />
         </Box>
+        <ToastContainer
+position="top-right"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="colored"
+/>
       </Box>
     </ThemeProvider>
   )

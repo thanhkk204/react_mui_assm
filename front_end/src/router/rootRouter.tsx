@@ -9,7 +9,7 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import AdminProductEdit from "../pages/dashboard/editProduct/EditProduct";
 import AdminProductAdd from "../pages/dashboard/createProduct/CreateProComponent";
-
+import 'react-toastify/dist/ReactToastify.css';
 const router = createBrowserRouter([
   {
     path: "/",

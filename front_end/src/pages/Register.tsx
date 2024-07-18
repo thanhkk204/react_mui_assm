@@ -5,6 +5,7 @@ import { Field, Form } from "react-final-form";
 import { useNavigate } from "react-router-dom";
 import isEmail from "validator/lib/isEmail";
 import { InputText } from "../components/elements/InputText";
+import { toast } from "react-toastify";
 
 type RegisterFormParams = {
   username: string;
@@ -29,6 +30,10 @@ const Register = () => {
   const onSubmit = async (data: RegisterFormParams) => {
     try {
       await axios.post("http://localhost:5000/auth/signup", data);
+      toast.success('🦄 Thành công !', {
+        position: "top-right",
+        autoClose: 5000,
+        });
       nav("/signin");
     } catch (error) {}
   };
