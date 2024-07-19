@@ -5,6 +5,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProductType } from '../constants/type';
+import { useCart } from '../context/CartProvider';
 
 
 type Props = {
@@ -13,6 +14,7 @@ type Props = {
 export default function Product({product}: Props) {
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
   const router = useNavigate()
+  const {addItem} = useCart()
 
   const handleShowDetail = ()=>{
     router('/productDetail/'+product._id)
@@ -20,6 +22,16 @@ export default function Product({product}: Props) {
   const handleSetFavorite = (e: any)=>{
     e.stopPropagation()
     setIsFavorite(!isFavorite)
+  }
+  const addToCart = (product: ProductType)=>{
+    console.log(product)
+    addItem({
+      _id: product._id,
+      title: product.title,
+      image: product.image,
+      price: product.price,
+      quantity: 1
+    })
   }
   return (
     <>
@@ -146,14 +158,15 @@ export default function Product({product}: Props) {
            onClick={(e)=>handleSetFavorite(e)}
            component={'button'}
            fontSize={'15px'}
-           sx={{border: 'none', backgroundColor: 'transparent', cursor: 'pointer'}}
+           sx={{border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: 'white'}}
            >
          { !isFavorite ? <FavoriteBorderIcon  /> : <FavoriteIcon sx={{color: theme=> theme.palette.error.light}}/>}
            </Box>
            <Box 
            component={'button'}
+           onClick={(e)=>{e.stopPropagation(), addToCart(product)}}
            fontSize={'15px'}
-           sx={{border: 'none', backgroundColor: 'transparent', cursor: 'pointer'}}
+           sx={{border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: 'white'}}
            >
            <AddShoppingCartIcon/>
            </Box>

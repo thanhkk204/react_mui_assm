@@ -8,12 +8,12 @@ import { toast } from "react-toastify";
 import { styled } from "@mui/system";
 
 const StyledContainer = styled(Container)({
-  marginTop: '4rem', // Tạo khoảng trống phía trên
+  marginTop: '4rem', 
   padding: '2rem',
   borderRadius: '8px',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   backgroundColor: '#fff',
-  maxWidth: '600px', // Giới hạn chiều rộng tối đa
+  maxWidth: '600px', 
   marginLeft: 'auto',
   marginRight: 'auto',
 });
@@ -35,7 +35,7 @@ function AdminProductEdit() {
     try {
       const { data } = await axios.get(`http://localhost:5000/product/${id}`);
       console.log('data', data);
-      setProduct(data);
+      setProduct({ ...data, categoryId: data.categoryId?._id });
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +55,7 @@ function AdminProductEdit() {
       });
       nav("/dashboard/productTable");
     } catch (error: any) {
-      const errorMessage = error.response.data.message ? error.response.data.message.message : error.message;
+      const errorMessage = error.response.data.message ? error.response.data.message : error.message;
       toast.error(errorMessage, {
         position: "top-right",
         autoClose: 5000,
@@ -70,7 +70,7 @@ function AdminProductEdit() {
           <StyledTypography variant="h3" textAlign={"center"}>
             Edit Product
           </StyledTypography>
-          <ProductForm onSubmit={onSubmit} initialValues={product} />
+          <ProductForm onSubmit={onSubmit} initialValues={product} formTitle="Edit Product" buttonColor="#28a745" />
         </Stack>
       </StyledContainer>
     </>
