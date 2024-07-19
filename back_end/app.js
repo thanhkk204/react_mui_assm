@@ -10,7 +10,7 @@ app.use(cors());
 
 async function connectMongoose() {
   try {
-    await mongoose.connect("mongodb+srv://phamhoaithuong2106:IsyMTi6QegnagZLU@cluster0.nlinvnx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
+    await mongoose.connect("mongodb://127.0.0.1:27017/react_mui_2");
     console.log("Connected to Mongoose!");
   } catch (error) {
     console.log(error)
@@ -25,9 +25,11 @@ app.get("/", (req, res) => {});
 import routerProduct from './routers/product.router.js'
 import routerCategory from './routers/category.router.js'
 import routerUser from './routers/user.router.js'
+import cartRouter from './routers/cart.router.js'
 app.use('/product', routerProduct)
 app.use('/category', routerCategory)
 app.use('/auth', routerUser);
+app.use('/cart', cartRouter);
 
 app.listen(port, (req, res) => {
   connectMongoose();

@@ -22,6 +22,7 @@ import {Box} from "@mui/material"
 // import { makeStyles } from '@mui/styles';
 import { NavLinks } from "../lib/constants";
 import { NavLink } from "react-router-dom";
+import Cart from "./Cart";
 
 const logoStyle = {
   width: "140px",
@@ -194,6 +195,11 @@ const Header = () => {
                 </MenuItem>
               </Box>
             </Box>
+             {/* Cart */}
+            <Box sx={{color: 'black', padding: 2, cursor: 'pointer'}}>
+              <Cart></Cart>
+            </Box>
+
             <Box
               sx={{
                 display: { xs: "none", md: "flex" },
@@ -282,6 +288,9 @@ const Header = () => {
                   </MenuItem>
                   <MenuItem onClick={() => scrollToSection('faq')}>FAQ</MenuItem>
                   <Divider />
+                  
+                  
+
                   <ButtonGroup aria-label="Medium-sized button group" sx={{my:1}}>
                     <Button 
                     onClick={()=>{setMode('light') , setOpen(false)}}

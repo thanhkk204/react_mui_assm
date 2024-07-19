@@ -32,6 +32,7 @@ export function getUserById(req, res) {
 
 // [POST] user/signup
 export async function signup(req, res) {
+  console.log('ttt');
   try {
     const data = req.body;
     if(!data.username || !data.password || !data.email) return res.status(400).json({ message: "Cần điền đầy đủ thông tin" });

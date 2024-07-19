@@ -9,11 +9,11 @@ import {
   signin,
 } from "../controllers/user.controller.js";
 
-router.get("/", getUser);
-router.get("/:id", getUserById);
+// router.get("/", getUser);
+// router.get("/:id", getUserById);
 router.post("/signup", signup);
 router.post("/signin", signin);
-router.put("/:id", updateUser);
-router.delete("/:id", removeUser);
+// router.put("/:id", updateUser);
+// router.delete("/:id", removeUser);
 
 export default router;

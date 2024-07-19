@@ -9,6 +9,7 @@ import {
   MenuItem,
   Select,
   Stack,
+  Typography,
 } from "@mui/material";
 import { ValidationErrors } from "final-form";
 import { Field, Form } from "react-final-form";
@@ -20,25 +21,18 @@ import { styled } from "@mui/system";
 type ProductFormProps = {
   onSubmit: (values: ProductFormParams) => void;
   initialValues?: any;
+  formTitle: string;
+  buttonColor: string;
 };
 
-const StyledFormControl = styled(FormControl)({
-  '& .MuiInputBase-root': {
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    padding: '8px',
-    transition: 'box-shadow 0.3s ease-in-out',
-    '&:hover': {
-      boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
-    },
-    '&.Mui-focused': {
-      boxShadow: '0 0 8px rgba(0, 0, 0, 0.5)',
-      border: '1px solid #000',
-    },
-  },
+const StyledFormContainer = styled('form')({
+  padding: '2rem',
+  borderRadius: '8px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#fff',
 });
 
-function ProductForm({ onSubmit, initialValues }: ProductFormProps) {
+function ProductForm({ onSubmit, initialValues, formTitle, buttonColor }: ProductFormProps) {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -58,7 +52,7 @@ function ProductForm({ onSubmit, initialValues }: ProductFormProps) {
     if (!title) errors.title = "Can nhap title vao";
     if (title && title.length < 6) errors.title = "Can nhap toi thieu 6 ky tu vao";
     if (!image) errors.image = "Can nhap image vao";
-    if (!categoryId) errors.categoryId = "Can nhap categoryId vao";
+    if (!categoryId) errors.categoryId = "Can nhap category vao";
     if (!price) errors.price = "Can nhap price vao";
     return errors;
   };
@@ -70,8 +64,11 @@ function ProductForm({ onSubmit, initialValues }: ProductFormProps) {
       initialValues={initialValues}
       render={({ handleSubmit, values }) => {
         return (
-          <form onSubmit={handleSubmit}>
+          <StyledFormContainer onSubmit={handleSubmit}>
             <Stack spacing={2}>
+              {/* <Typography variant="h5" textAlign="center" gutterBottom>
+                {formTitle}
+              </Typography> */}
               <Field
                 name="title"
                 render={({ input, meta }) => (
@@ -129,9 +126,9 @@ function ProductForm({ onSubmit, initialValues }: ProductFormProps) {
                 name="categoryId"
                 render={({ input, meta }) => {
                   return (
-                    <StyledFormControl fullWidth error={meta.touched && !!meta.error}>
-                      <InputLabel>categoryId</InputLabel>
-                      <Select label="categoryId" {...input}>
+                    <FormControl fullWidth error={meta.touched && !!meta.error}>
+                      <InputLabel>Category</InputLabel>
+                      <Select label="Category" {...input}>
                         <MenuItem value="">Select</MenuItem>
                         {categories.map(category => (
                           <MenuItem key={category._id} value={category._id}>
@@ -142,13 +139,15 @@ function ProductForm({ onSubmit, initialValues }: ProductFormProps) {
                       {meta.touched && meta.error && (
                         <FormHelperText>{meta.error}</FormHelperText>
                       )}
-                    </StyledFormControl>
+                    </FormControl>
                   );
                 }}
               />
-              <Button type="submit" variant="contained" color="primary">Submit</Button>
+              <Button type="submit" style={{ backgroundColor: buttonColor, color: '#fff' }}>
+                Submit
+              </Button>
             </Stack>
-          </form>
+          </StyledFormContainer>
         );
       }}
     />

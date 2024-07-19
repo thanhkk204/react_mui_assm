@@ -2,13 +2,17 @@ import { Box, Button, CircularProgress, Grid, Rating, Typography } from "@mui/ma
 import { useEffect, useState } from "react"
 import { ProductType } from "../constants/type"
 import { useParams } from "react-router-dom"
+import { useCart } from "../context/CartProvider"
 
 
 export default function ProductDetail() {
   const [product, setProduct] = useState<ProductType>()
   const [loading, setLoading] = useState<boolean>(false)
+  const [quantity, setQuantity] = useState<number>(1)
   let { id } = useParams()
+  const {cart , updateQuantity } = useCart()
   console.log('productDetail', product)
+  if(!id) return
   useEffect(()=>{
     if(id){
         const fetchData = async ()=>{
@@ -31,6 +35,21 @@ export default function ProductDetail() {
       }
       
   },[id])
+
+  const handleMinus = ( quantity: number) => {
+    if (quantity < 1) return
+    setQuantity(quantity)
+  }
+  const handlePlus = (quantity: number) => {
+    setQuantity(quantity)
+  }
+
+  const handleAddToCart = () =>{
+    const orderedPro = cart.find(item=> item._id === id)
+    if(orderedPro)
+    updateQuantity(id, orderedPro.quantity + quantity)
+  }
+
   return (
     <>
     {
@@ -224,12 +243,55 @@ export default function ProductDetail() {
                 </Box>
               </Box>
             </Box>
+            <Box sx={{display: 'flex', flexDirection: 'column', py:1}}>
+              <Typography variant="caption" sx={{fontSize: '20px', color: theme=> theme.palette.grey[500]}}>
+                Số lượng:
+              </Typography>
+            <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(),
+                        handleMinus(quantity - 1)
+                    }}
+                    style={{
+                      width: "26px",
+                      height: "26px",
+                      cursor: "pointer",
+                      border: "none",
+                      borderRadius: "5px",
+                      fontSize: "19px",
+                    }}
+                  >
+                    -
+                  </button>
+                  {quantity}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(),
+                        handlePlus(quantity + 1)
+                    }}
+                    style={{
+                      width: "26px",
+                      height: "26px",
+                      cursor: "pointer",
+                      border: "none",
+                      borderRadius: "5px",
+                      fontSize: "19px",
+                    }}
+                  >
+                    +
+                  </button>
+            </Box>
+            </Box>
             
             <Box sx={{width:'100%', py: 2, display: 'flex', flexDirection: 'column', gap: 1}}>
             <Button variant="contained" size="large" color="primary" sx={{width:{xs: '100%', md:'50%'}}}>
               Mua hàng
             </Button>
-            <Button variant="outlined" size="large" color="error" sx={{width:{xs: '100%', md:'50%'}}}>
+            <Button
+             onClick={()=> handleAddToCart()}
+             variant="outlined" size="large" color="error" sx={{width:{xs: '100%', md:'50%'}}}
+             >
               Thêm vào giỏ
             </Button>
             </Box>
