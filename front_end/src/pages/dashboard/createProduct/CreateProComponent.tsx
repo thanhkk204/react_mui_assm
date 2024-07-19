@@ -5,6 +5,26 @@ import { useLoading } from "../../../contexts/loading";
 import { ProductFormParams } from "../../../constants/type";
 import ProductForm from "../../../components/ProductForm";
 import { toast } from "react-toastify";
+import { styled } from "@mui/system";
+
+const StyledContainer = styled(Container)({
+  marginTop: '4rem', // Tạo khoảng trống phía trên
+  padding: '2rem',
+  borderRadius: '8px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#fff',
+  maxWidth: '600px', // Giới hạn chiều rộng tối đa
+  marginLeft: 'auto',
+  marginRight: 'auto',
+});
+
+const StyledTypography = styled(Typography)({
+  fontWeight: 'bold',
+  color: '#333',
+  marginBottom: '1rem',
+  borderBottom: '2px solid #ddd',
+  paddingBottom: '0.5rem',
+});
 
 function AdminProductAdd() {
   const nav = useNavigate();
@@ -19,7 +39,13 @@ function AdminProductAdd() {
         autoClose: 5000,
         });
       nav("/dashboard/productTable");
-    } catch (error) {
+    } catch (error:any) {
+      console.log(error)
+      const errorMessage = error.response.data.message ? error.response.data.message : error.message
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        });
     } finally {
       setLoading(false);
     }
@@ -27,14 +53,14 @@ function AdminProductAdd() {
 
   return (
     <>
-      <Container>
+      <StyledContainer>
         <Stack gap={2}>
-          <Typography variant="h3" textAlign={"center"}>
+          <StyledTypography variant="h3" textAlign={"center"}>
             Add Product
-          </Typography>
+          </StyledTypography>
           <ProductForm onSubmit={onSubmit} initialValues={{ isShow: true }} />
         </Stack>
-      </Container>
+      </StyledContainer>
     </>
   );
 }

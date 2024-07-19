@@ -5,6 +5,26 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ProductFormParams, ProductType } from "../../../constants/type";
 import ProductForm from "../../../components/ProductForm";
 import { toast } from "react-toastify";
+import { styled } from "@mui/system";
+
+const StyledContainer = styled(Container)({
+  marginTop: '4rem', // Tạo khoảng trống phía trên
+  padding: '2rem',
+  borderRadius: '8px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#fff',
+  maxWidth: '600px', // Giới hạn chiều rộng tối đa
+  marginLeft: 'auto',
+  marginRight: 'auto',
+});
+
+const StyledTypography = styled(Typography)({
+  fontWeight: 'bold',
+  color: '#333',
+  marginBottom: '1rem',
+  borderBottom: '2px solid #ddd',
+  paddingBottom: '0.5rem',
+});
 
 function AdminProductEdit() {
   const nav = useNavigate();
@@ -14,12 +34,13 @@ function AdminProductEdit() {
   const getProduct = async (id: string) => {
     try {
       const { data } = await axios.get(`http://localhost:5000/product/${id}`);
-      console.log('data',data)
+      console.log('data', data);
       setProduct(data);
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     if (!id) return;
     getProduct(id);
@@ -31,21 +52,27 @@ function AdminProductEdit() {
       toast.success('🦄 Thành công !', {
         position: "top-right",
         autoClose: 5000,
-        });
+      });
       nav("/dashboard/productTable");
-    } catch (error) {}
+    } catch (error: any) {
+      const errorMessage = error.response.data.message ? error.response.data.message.message : error.message;
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+      });
+    }
   };
 
   return (
     <>
-      <Container>
+      <StyledContainer>
         <Stack gap={2}>
-          <Typography variant="h3" textAlign={"center"}>
+          <StyledTypography variant="h3" textAlign={"center"}>
             Edit Product
-          </Typography>
+          </StyledTypography>
           <ProductForm onSubmit={onSubmit} initialValues={product} />
         </Stack>
-      </Container>
+      </StyledContainer>
     </>
   );
 }

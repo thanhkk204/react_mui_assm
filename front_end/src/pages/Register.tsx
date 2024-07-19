@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import isEmail from "validator/lib/isEmail";
 import { InputText } from "../components/elements/InputText";
 import { toast } from "react-toastify";
+import { useState } from "react";
 
 type RegisterFormParams = {
   username: string;
@@ -14,6 +15,7 @@ type RegisterFormParams = {
 };
 
 const Register = () => {
+  const [errors, setErrors] = useState<any>()
   const nav = useNavigate();
   const validate = (values: RegisterFormParams) => {
     const { username, email, password } = values;
@@ -24,10 +26,13 @@ const Register = () => {
     if (!password) errors.password = "Can nhap password vao";
     if (password && password.length < 8)
       errors.password = `Can nhap password toi thieu 8 ky tu`;
+    setErrors(errors)
     return errors;
   };
 
   const onSubmit = async (data: RegisterFormParams) => {
+    console.log(Object.keys(errors).length)
+   if(Object.keys(errors).length !== 0) return
     try {
       await axios.post("http://localhost:5000/auth/signup", data);
       toast.success('🦄 Thành công !', {
@@ -35,7 +40,14 @@ const Register = () => {
         autoClose: 5000,
         });
       nav("/signin");
-    } catch (error) {}
+    } catch (error: any) {
+      console.log(error)
+      const errorMessage = error.response.data.message ? error.response.data.message : error.message
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        });
+    }
   };
 
   return (

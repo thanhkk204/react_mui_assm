@@ -22,6 +22,6 @@ export type ProductFormParams = {
   price: number;
   image: string;
   description: string;
-  categoryId: string;
+  categoryId: Category;
   isShow: boolean;
 };

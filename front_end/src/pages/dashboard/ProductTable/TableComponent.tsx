@@ -7,8 +7,8 @@ import { TransitionProps } from '@mui/material/transitions';
 
 type Props = {
   products: ProductType[]
-  handleDelete:(_id: string)=> void
-  handleEdit:(_id: string)=> void
+  handleDelete: (_id: string) => void
+  handleEdit: (_id: string) => void
 }
 
 const Transition = React.forwardRef(function Transition(
@@ -20,18 +20,18 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function TableComponent({ products, handleDelete, handleEdit } : Props) {
-  const [open, setOpen] = useState<boolean>(false)
-  const [id, setId] = useState<string>('')
+export default function TableComponent({ products, handleDelete, handleEdit }: Props) {
+  const [open, setOpen] = useState<boolean>(false);
+  const [id, setId] = useState<string>('');
   const productsWithId = products.map(product => ({
     ...product,
-    id: product._id, 
+    id: product._id,
   }));
 
-  const handleClickOpen = (_id: string)=>{
-    setOpen(!open)
-    setId(_id)
-  }
+  const handleClickOpen = (_id: string) => {
+    setOpen(!open);
+    setId(_id);
+  };
   const handleClose = () => {
     setOpen(false);
   };
@@ -49,28 +49,26 @@ export default function TableComponent({ products, handleDelete, handleEdit } : 
         checkboxSelection
       />
 
-     <React.Fragment>
-      
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-Bạn có muốn muốn xóa thôi        
-
-  </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>No</Button>
-          <Button onClick={()=>{handleClose(), handleDelete(id)}}>Oke</Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+      <React.Fragment>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>{"Bạn có muốn xóa sản phẩm này không?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              {/* Bạn có muốn muốn xóa thôi */}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>No</Button>
+            <Button color="error" onClick={() => { handleClose(); handleDelete(id); }}>Delete</Button>
+          </DialogActions>
+        </Dialog>
+      </React.Fragment>
     </div>
   );
 }

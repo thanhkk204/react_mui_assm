@@ -35,7 +35,7 @@ export function getById(req, res) {
 
 // [GET] /product
 export function getAll(req, res) {
-  Product.find()
+  Product.find().populate('categoryId')
   .then((data) => {
     res.status(200).json(data);
     // console.log(data)

@@ -34,7 +34,9 @@ export function getUserById(req, res) {
 export async function signup(req, res) {
   try {
     const data = req.body;
+    if(!data.username || !data.password || !data.email) return res.status(400).json({ message: "Cần điền đầy đủ thông tin" });
     const userExist = await User.findOne({ email: data.email });
+    console.log(data)
     if (userExist) return res.status(400).json({ message: "Email đã tồn tại" });
     if (data.password && data.password != "") {
       if (data.password.length < 6) {

@@ -2,13 +2,13 @@ import { Box, Container, Grid, Paper } from "@mui/material";
 import TableComponent from "./TableComponent";
 import { ProductType } from "../../../constants/type";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function ProductTable() {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +21,8 @@ export default function ProductTable() {
             "Content-Type": "application/json",
           },
         });
-        const data = await res.json() as ProductType[];
+        const data = (await res.json()) as ProductType[];
+        console.log(data);
         setProducts(data);
         setLoading(false);
       } catch (error) {
@@ -44,7 +45,7 @@ export default function ProductTable() {
         },
       });
       if (!res.ok) {
-        return  toast.error('🦄 Thất bại!', {
+        return toast.error("🦄 Thất bại!", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -53,12 +54,12 @@ export default function ProductTable() {
           draggable: true,
           progress: undefined,
           theme: "colored",
-          });
+        });
       }
-      toast.success('🦄 Thành công !', {
+      toast.success("🦄 Thành công !", {
         position: "top-right",
         autoClose: 5000,
-        });
+      });
       setProducts((preProduct) => [
         ...preProduct.filter((item) => item._id !== _id),
       ]);
@@ -71,12 +72,16 @@ export default function ProductTable() {
   };
 
   const handleEdit = (_id: string) => {
-    navigate(`/dashboard/editProduct/${_id}`); // Navigate to edit page
+    navigate(`/dashboard/editProduct/${_id}`);
   };
 
   return (
     <Container maxWidth="lg" sx={{ mt: 16 }}>
-      <TableComponent products={products} handleDelete={handleDelete} handleEdit={handleEdit} />
+      <TableComponent
+        products={products}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+      />
     </Container>
   );
 }
