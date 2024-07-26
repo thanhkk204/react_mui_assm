@@ -10,42 +10,28 @@ import { useCart } from "../context/CartProvider"
 import { Box, Button, Typography } from "@mui/material"
 import { Image } from "@mui/icons-material"
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein }
-}
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-]
+
 
 export default function CartProductTable() {
-  const { cart, updateQuantity, removeItem } = useCart()
-
+  const { cart , updateQuantity, removeItem} = useCart()
   const handleMinus = (_id: string, quantity: number) => {
     if (quantity < 1) return
-    updateQuantity(_id, quantity)
+    updateQuantity({_id: _id, quantity})
   }
   const handlePlus = (_id: string, quantity: number) => {
-    updateQuantity(_id, quantity)
+    updateQuantity({_id: _id, quantity})
   }
-  const total = cart.reduce((sum, item)=>{
-       return sum += item.quantity * item.price
-  },0)
+  // const total = cart.reduce((sum, item)=>{
+  //      return sum += item.quantity * item.price
+  // },0)
   return (
     <TableContainer onClick={(e) => e.stopPropagation()} component={Paper}>
       <Table sx={{ width: "100%" }} aria-label="caption table">
         <caption >
           <div style={{width: '100%', textAlign: 'end'}}>
         <div>Tổng</div>
-        <p>{total}</p>
+        {/* <p>{total}</p> */}
 
           </div>
         </caption>
@@ -59,7 +45,7 @@ export default function CartProductTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {cart.map((orderedPro) => (
+          {cart.orderedProduct.map((orderedPro) => (
             <TableRow key={orderedPro._id}>
               <TableCell component="th" scope="row">
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -72,8 +58,8 @@ export default function CartProductTable() {
                     }}
                   >
                     <img
-                      src={orderedPro.image}
-                      alt={orderedPro.image}
+                      src={orderedPro.product_id.image}
+                      alt={orderedPro.product_id.image}
                       style={{
                         width: "100%",
                         height: "100%",
@@ -81,10 +67,10 @@ export default function CartProductTable() {
                       }}
                     />
                   </Box>
-                  <Typography>{orderedPro.title}</Typography>
+                  <Typography>{orderedPro.product_id.title}</Typography>
                 </Box>
               </TableCell>
-              <TableCell align="center">{orderedPro.price}</TableCell>
+              <TableCell align="center">{orderedPro.product_id.price}</TableCell>
               <TableCell align="center">
                 <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
                   <button
@@ -123,7 +109,7 @@ export default function CartProductTable() {
                 </Box>
               </TableCell>
               <TableCell align="right">
-                {orderedPro.price * orderedPro.quantity}
+                {orderedPro.product_id.price * orderedPro.quantity}
               </TableCell>
               <TableCell align="right">
                 <Box

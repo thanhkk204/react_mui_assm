@@ -12,7 +12,7 @@ type Anchor = "top" | "left" | "bottom" | "right"
 
 export default function Cart() {
   const {cart} = useCart()
-  const quantity = cart.reduce((sum, item)=>{
+  const quantity = cart.orderedProduct.reduce((sum, item)=>{
      return sum += item.quantity
   },0)
   const [state, setState] = React.useState({

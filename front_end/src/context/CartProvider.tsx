@@ -1,89 +1,103 @@
-"use client"
-// context/CartContext.tsx
-import { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { CartItem } from '../constants/type';
+"use client";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  ReactNode,
+  useState,
+} from "react";
+import { CartItem } from "../constants/type";
 
-
-type CartState = CartItem[];
-
-type CartAction =
-  | { type: 'SET_CART'; payload: CartState }
-  | { type: 'ADD_ITEM'; payload: CartItem }
-  | { type: 'REMOVE_ITEM'; payload: { _id: string } }
-  | { type: 'UPDATE_QUANTITY'; payload: { _id: string; quantity: number } }
-  | { type: 'CLEAR_CART' };
-
-const cartReducer = (state: CartState, action: CartAction): CartState => {
-  switch (action.type) {
-    case 'SET_CART':
-      return action.payload;
-    case 'ADD_ITEM':
-      const existingItem = state.find(item => item._id === action.payload._id);
-      if (existingItem) {
-        return state.map(item =>
-          item._id === action.payload._id
-            ? { ...item, quantity: item.quantity + action.payload.quantity }
-            : item
-        );
-      } else {
-        return [...state, { ...action.payload, quantity: 1 }];
-      }
-    case 'REMOVE_ITEM':
-      return state.filter(item => item._id !== action.payload._id);
-    case 'UPDATE_QUANTITY':
-      return state.map(item =>
-        item._id === action.payload._id
-          ? { ...item, quantity: action.payload.quantity }
-          : item
-      );
-    case 'CLEAR_CART':
-      return [];
-    default:
-      return state;
-  }
+type AddToCarytType = {
+  product_id: string;
+  quantity: number;
 };
-
+type UpdateCartType = {
+  _id: string;
+  quantity: number;
+};
 interface CartContextProps {
-  cart: CartState;
-  addItem: (item: CartItem) => void;
+  cart: CartItem;
+  addProductToCart: (item: AddToCarytType) => void;
+  updateQuantity: (product: UpdateCartType) => void;
   removeItem: (_id: string) => void;
-  updateQuantity: (_id: string, quantity: number) => void;
-  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextProps | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cart, dispatch] = useReducer(cartReducer, [], () => {
-    if (typeof window !== 'undefined') {
-      const localData = localStorage.getItem('cart');
-      return localData ? JSON.parse(localData) : [];
-    }
-    return [];
+  const user = localStorage.getItem("user");
+  if (!user) throw new Error("Can't find user in localstorage");
+  const userID = JSON.parse(user)._id;
+
+  const [cart, setCart] = useState<CartItem>({
+    _id: "",
+    userId: userID,
+    orderedProduct: [],
   });
 
+  const getCart = async () => {
+    const res = await fetch("http://localhost:5000/cart/" + userID, {
+      method: "GET",
+    });
+    const data = await res.json();
+    if (data.cart) {
+      setCart(data.cart);
+    }
+  };
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+    getCart();
+  }, []);
+  // console.log("cart", cart);
+  
 
-  const addItem = (item: CartItem) => {
-    dispatch({ type: 'ADD_ITEM', payload: item });
+  const addProductToCart = async (item: AddToCarytType) => {
+    const res = await fetch("http://localhost:5000/cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userID,
+        cartId: cart._id,
+        orderedDetails: item,
+      }),
+    });
+    const data = await res.json();
+    if (data.cart) {
+      setCart(data.cart);
+    }
   };
 
-  const removeItem = (_id: string) => {
-    dispatch({ type: 'REMOVE_ITEM', payload: { _id } });
+  const removeItem = async (_id: string) => {
+    const res = await fetch("http://localhost:5000/cart/" + _id, {
+      method: "DELETE",
+    });
+    const data = await res.json();
+    if (data.cart) {
+      setCart(data.cart);
+    }
   };
 
-  const updateQuantity = (_id: string, quantity: number) => {
-    dispatch({ type: 'UPDATE_QUANTITY', payload: { _id, quantity } });
+  const updateQuantity = async (product: UpdateCartType) => {
+    const res = await fetch("http://localhost:5000/cart", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userID,
+        cartId: cart._id,
+        orderedDetails: product,
+      }),
+    });
+    const data = await res.json();
+    if (data.cart) {
+      setCart(data.cart);
+    }
   };
-
-  const clearCart = () => {
-    dispatch({ type: 'CLEAR_CART' });
-  };
-
   return (
-    <CartContext.Provider value={{ cart, addItem, removeItem, updateQuantity, clearCart }}>
+    <CartContext.Provider value={{ cart, addProductToCart, updateQuantity, removeItem }}>
       {children}
     </CartContext.Provider>
   );
@@ -92,7 +106,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 export const useCart = (): CartContextProps => {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
+    throw new Error("useCart must be used within a CartProvider");
   }
   return context;
 };

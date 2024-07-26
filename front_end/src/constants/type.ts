@@ -28,8 +28,13 @@ export type ProductFormParams = {
 
 export type CartItem = {
   _id: string;
-  title: string;
-  price: number;
-  image: string;
+  userId: string;
+  orderedProduct: OrderedProducType[];
+};
+export type OrderedProducType = {
+  _id: string;
+  product_id: ProductType;
   quantity: number;
-}
+  createdAt: string;
+  updatedAt: string;
+};

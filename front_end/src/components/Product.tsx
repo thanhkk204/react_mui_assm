@@ -14,7 +14,7 @@ type Props = {
 export default function Product({product}: Props) {
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
   const router = useNavigate()
-  const {addItem} = useCart()
+  const {addProductToCart} = useCart()
 
   const handleShowDetail = ()=>{
     router('/productDetail/'+product._id)
@@ -24,13 +24,9 @@ export default function Product({product}: Props) {
     setIsFavorite(!isFavorite)
   }
   const addToCart = (product: ProductType)=>{
-    console.log(product)
-    addItem({
-      _id: product._id,
-      title: product.title,
-      image: product.image,
-      price: product.price,
-      quantity: 1
+    addProductToCart({
+      product_id: product._id,
+      quantity: 1,
     })
   }
   return (

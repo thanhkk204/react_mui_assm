@@ -10,10 +10,11 @@ import Login from "../pages/Login";
 import AdminProductEdit from "../pages/dashboard/editProduct/EditProduct";
 import AdminProductAdd from "../pages/dashboard/createProduct/CreateProComponent";
 import 'react-toastify/dist/ReactToastify.css';
+import ProtectRouter from "../pages/Protected";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <ProtectRouter><App /></ProtectRouter>,
     children: [
       {
         path: "/",
@@ -23,19 +24,19 @@ const router = createBrowserRouter([
         path: "/productDetail/:id",
         element: <ProductDetail />,
       },
-      {
-        path: "signup",
-        element: <Register />,
-      },
-      {
-        path: "signin",
-        element: <Login />,
-      },
     ],
   },
   {
+    path: "/signup",
+    element: <Register />,
+  },
+  {
+    path: "/signin",
+    element: <Login />,
+  },
+  {
     path: "/dashboard",
-    element: <Dashboard />,
+    element:  <ProtectRouter><Dashboard /></ProtectRouter>,
     children: [
       {
         path: "",

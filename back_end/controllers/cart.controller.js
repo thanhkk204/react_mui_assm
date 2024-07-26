@@ -15,24 +15,32 @@ export function getCate(req, res) {
 // [GET]:id
 export async function getCateByUserId(req, res) {
   let id = req.params.id;
-  if (id) {
-    const cart = await Cart.findOne({userId: id}).populate('orderedProduct');
-
-    if (!cart) {
-      console.error('Cart not found');
-      return null;
-    }
-    res.status(200).json({data: cart});
-    console.log('Retrieved cart:', cart);
-  } else {
-    res.status(400).json({ message: "Không nhận được id" });
+  
+  try {
+    if(!id) return res.status(400).json({ message: "Không nhận được id" });
+      const cart = await Cart.findOne({userId: id}).populate({
+        path: 'orderedProduct',
+        populate: {
+          path: 'product_id',
+          model: 'products'
+        }
+      })
+      .exec();
+  
+      if (!cart) {
+       return  res.status(400).json({ message: "Không có cart" });
+      }
+        
+        res.status(200).json({cart: cart});
+      } catch (error) {
+        console.log('err', error)
+        
+        res.status(400).json({ message: "Lỗi server" });
   }
 }
 
 // [POST]
 export const addProductToCart = async (req, res) => {
-    console.log('addtocarrt');
-    console.log('req', req.body)
     let userId = req.body.userId
     let cartId = req.body.cartId;
     const orderedDetails = req.body.orderedDetails;
@@ -42,22 +50,44 @@ export const addProductToCart = async (req, res) => {
     if(!existingCart){
         const newCart = await Cart.create({userId: userId})
         cartId = newCart._id
-        console.log('newCart', newCart)
-    } 
-    console.log('existingCart',existingCart)
+    }
+      
+    let existedCart = await Cart.findById(cartId).populate('orderedProduct');
 
+    // console.log(existedCart)
+    // console.log(existedCart.orderedProduct)
+     const orderedPro = existedCart.orderedProduct.find( item => item.product_id.toString() === orderedDetails.product_id)
+     console.log(orderedPro)
+     if(orderedPro) {
+      await OrderedProduct.findByIdAndUpdate(orderedPro._id, {quantity: orderedPro.quantity + orderedDetails.quantity}, {new: true})
+      const newCart = await Cart.findById(cartId).populate({
+        path: 'orderedProduct',
+        populate: {
+          path: 'product_id',
+          model: 'products'
+        }
+      })
+      .exec();
+      return res.status(200).json({cart: newCart});
+     }
       // Tạo một orderedProduct mới
       const orderedProduct = new OrderedProduct(orderedDetails);
       await orderedProduct.save();
-     
       // Thêm orderedProduct vào cart
       const updatedCart = await Cart.findByIdAndUpdate(
         cartId,
         { $addToSet: { orderedProduct: orderedProduct._id } },
         { new: true, useFindAndModify: false }
-      ).populate('orderedProduct');
+      ).populate({
+        path: 'orderedProduct',
+        populate: {
+          path: 'product_id',
+          model: 'products'
+        }
+      })
+      .exec();
   
-      res.status(200).json({data: updatedCart});
+      res.status(200).json({cart: updatedCart});
     } catch (error) {
       console.error('Error adding product to cart:', error);
     }
@@ -65,7 +95,6 @@ export const addProductToCart = async (req, res) => {
 
 // [PUT]
 export const updateProductQuantityInCart = async (req, res) => {
-  // cartId, productId, newQuantity
   const cartId = req.body.cartId
   const orderedDetails = req.body.orderedDetails;
   try {
@@ -91,10 +120,15 @@ export const updateProductQuantityInCart = async (req, res) => {
     await orderedProduct.save();
 
     // Populate orderedProduct để lấy thông tin chi tiết của sản phẩm
-    await cart.populate('orderedProduct')
-
-    console.log('Updated cart:', cart);
-    res.status(200).json({data: cart});
+    const newCart = await Cart.findById(cartId).populate({
+      path: 'orderedProduct',
+      populate: {
+        path: 'product_id',
+        model: 'products'
+      }
+    })
+    .exec();
+    return res.status(200).json({cart: newCart});
   } catch (error) {
     console.error('Error updating product quantity in cart:', error);
   }
@@ -122,10 +156,17 @@ export const deleteProductFromCart = async (req, res) => {
     await OrderedProduct.findByIdAndDelete(productId);
 
     // Populate orderedProduct để lấy thông tin chi tiết của sản phẩm
-    await cart.populate('orderedProduct')
+     const newCart = await Cart.findById(cart._id).populate({
+      path: 'orderedProduct',
+      populate: {
+        path: 'product_id',
+        model: 'products'
+      }
+    })
+    .exec();
+    return res.status(200).json({cart: newCart});
 
-    res.status(200).json({data: cart});
-   console.log('thanh')
+  
   } catch (error) {
     console.error('Error deleting product from cart:', error);
   }
