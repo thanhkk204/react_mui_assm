@@ -125,7 +125,7 @@ export const deleteProductFromCart = async (req, res) => {
     await cart.populate('orderedProduct')
 
     res.status(200).json({data: cart});
-
+   console.log('thanh')
   } catch (error) {
     console.error('Error deleting product from cart:', error);
   }
