@@ -16,7 +16,7 @@ export default function ProductDetail() {
   const [loading, setLoading] = useState<boolean>(false);
   const [quantity, setQuantity] = useState<number>(1);
   let { id } = useParams();
-  const { cart, updateQuantity, addItem } = useCart();
+  const { cart, updateQuantity,  } = useCart();
   console.log("productDetail", product);
   if (!id) return;
   const handleCick = () => {
@@ -65,7 +65,7 @@ export default function ProductDetail() {
       });
     }
   };
-return (
+  return (
     <>
       {loading && (
         <Box

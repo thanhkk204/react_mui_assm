@@ -7,10 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import { ProductType } from '../constants/type';
 import { useCart } from '../context/CartProvider';
 
-
 type Props = {
   product: ProductType
 }
+
 export default function Product({product}: Props) {
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
   const router = useNavigate()

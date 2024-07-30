@@ -9,12 +9,17 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import AdminProductEdit from "../pages/dashboard/editProduct/EditProduct";
 import AdminProductAdd from "../pages/dashboard/createProduct/CreateProComponent";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import ProtectRouter from "../pages/Protected";
+import CheckoutPage from "../components/Checkout";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ProtectRouter><App /></ProtectRouter>,
+    element: (
+      <ProtectRouter>
+        <App />
+      </ProtectRouter>
+    ),
     children: [
       {
         path: "/",
@@ -24,6 +29,10 @@ const router = createBrowserRouter([
         path: "/productDetail/:id",
         element: <ProductDetail />,
       },
+      {
+        path: '/checkout',
+        element: <CheckoutPage />,
+      }
     ],
   },
   {
@@ -36,7 +45,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element:  <ProtectRouter><Dashboard /></ProtectRouter>,
+    element: (
+      <ProtectRouter>
+        <Dashboard />
+      </ProtectRouter>
+    ),
     children: [
       {
         path: "",

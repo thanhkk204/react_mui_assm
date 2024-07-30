@@ -30,24 +30,7 @@ const logoStyle = {
   cursor: "pointer",
 }
 
-// const useStyles: any = makeStyles((theme: Theme) => ({
-//   activeLink: {
-//     color: theme.palette.primary.main,
-//     textDecoration: 'none'
-//   },
-//   unActiveLink:{
-//    textDecoration: 'none',
-//    fontSize: theme.typography.body2.fontSize,
-//    fontWeight: theme.typography.body2.fontWeight,
-//    fontFamily: theme.typography.body2.fontFamily,
-//    color: theme.palette.text.secondary
-//   }
-    
-// })
-// );
-
 const Header = () => {
-  // const classes = useStyles();
   const { mode, setMode } = useColorScheme()
   const [mounted, setMounted] = useState(false)
   const [open, setOpen] = useState(false);
@@ -56,8 +39,6 @@ const Header = () => {
   }, [])
 
   if (!mounted) {
-    // for server-side rendering
-    // learn more at https://github.com/pacocoursey/next-themes#avoid-hydration-mismatch
     return null
   }
 

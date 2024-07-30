@@ -1,4 +1,3 @@
-import * as React from "react"
 import Table from "@mui/material/Table"
 import TableBody from "@mui/material/TableBody"
 import TableCell from "@mui/material/TableCell"
@@ -7,8 +6,7 @@ import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
 import Paper from "@mui/material/Paper"
 import { useCart } from "../context/CartProvider"
-import { Box, Button, Typography } from "@mui/material"
-import { Image } from "@mui/icons-material"
+import { Box, Typography } from "@mui/material"
 
 
 

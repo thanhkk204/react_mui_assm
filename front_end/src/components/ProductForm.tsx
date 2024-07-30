@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Checkbox,
@@ -9,7 +9,6 @@ import {
   MenuItem,
   Select,
   Stack,
-  Typography,
 } from "@mui/material";
 import { ValidationErrors } from "final-form";
 import { Field, Form } from "react-final-form";
@@ -66,9 +65,6 @@ function ProductForm({ onSubmit, initialValues, formTitle, buttonColor }: Produc
         return (
           <StyledFormContainer onSubmit={handleSubmit}>
             <Stack spacing={2}>
-              {/* <Typography variant="h5" textAlign="center" gutterBottom>
-                {formTitle}
-              </Typography> */}
               <Field
                 name="title"
                 render={({ input, meta }) => (
