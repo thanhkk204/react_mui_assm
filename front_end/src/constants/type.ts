@@ -38,3 +38,12 @@ export type OrderedProducType = {
   createdAt: string;
   updatedAt: string;
 };
+export type CheckoutType = {
+  _id: string;
+  orderedProducts: OrderedProducType[];
+  name: string;
+  phone: string;
+  address: string;
+  createdAt: string;
+  updatedAt: string;
+};

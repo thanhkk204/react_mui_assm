@@ -12,6 +12,7 @@ import AdminProductAdd from "../pages/dashboard/createProduct/CreateProComponent
 import "react-toastify/dist/ReactToastify.css";
 import ProtectRouter from "../pages/Protected";
 import CheckoutPage from "../components/Checkout";
+import Checkouts from "../pages/dashboard/Checkouts";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: "editProduct/:id",
         element: <AdminProductEdit />,
+      },
+      {
+        path: "checkouts",
+        element: <Checkouts />,
       },
     ],
   },

@@ -18,6 +18,8 @@ type UpdateCartType = {
 };
 interface CartContextProps {
   cart: CartItem;
+  setCart: (cartItem: CartItem) => void;
+  userID: string;
   addProductToCart: (item: AddToCarytType) => void;
   updateQuantity: (product: UpdateCartType) => void;
   removeItem: (_id: string) => void;
@@ -48,7 +50,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     getCart();
   }, []);
-  // console.log("cart", cart);
   
 
   const addProductToCart = async (item: AddToCarytType) => {
@@ -97,7 +98,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   return (
-    <CartContext.Provider value={{ cart, addProductToCart, updateQuantity, removeItem }}>
+    <CartContext.Provider value={{ cart,setCart ,userID, addProductToCart, updateQuantity, removeItem }}>
       {children}
     </CartContext.Provider>
   );

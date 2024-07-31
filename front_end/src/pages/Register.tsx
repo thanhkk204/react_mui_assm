@@ -56,7 +56,6 @@ const Register = () => {
   };
 
   return (
-    <CartProvider>
       <Box
         sx={{
           backgroundColor: (theme) => theme.palette.background.default,
@@ -64,8 +63,6 @@ const Register = () => {
           width: "100%",
         }}
       >
-        {/* Header */}
-        <Header />
         <Box
           sx={{
             position: "relative",
@@ -132,8 +129,6 @@ const Register = () => {
             </Container>
           </Container>
         </Box>
-        {/* Footer */}
-        <Footer />
         <ToastContainer
           position="top-right"
           autoClose={5000}
@@ -147,7 +142,6 @@ const Register = () => {
           theme="colored"
         />
       </Box>
-    </CartProvider>
   );
 };
 

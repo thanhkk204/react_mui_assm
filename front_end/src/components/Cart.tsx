@@ -53,8 +53,12 @@ export default function Cart() {
       <Divider />
       <Box sx={{ paddingY: 2 }}>
         <CartProductTable />
-        <Link to="/checkout">
-          <Button variant="contained" color="success">
+        <Link to="/checkout" style={{width: '100%'}}>
+          <Button variant="contained" sx={{
+            my: 2,
+            width: '100%',
+            py:2
+          }} color="success">
             Checkout
           </Button>
         </Link>

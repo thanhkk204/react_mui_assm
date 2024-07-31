@@ -10,9 +10,20 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { Link } from 'react-router-dom';
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import AddIcon from '@mui/icons-material/Add';
+import HomeIcon from '@mui/icons-material/Home';
 export const mainListItems = (
   <React.Fragment>
+
+   <Link to={'/'} style={{textDecoration: 'none', color: 'black'}} >
+    <ListItemButton>
+      <ListItemIcon>
+        <HomeIcon />
+      </ListItemIcon>
+      <ListItemText primary="Home" />
+    </ListItemButton>
+    </Link>
 
     <Link to={'/dashboard'} style={{textDecoration: 'none', color: 'black'}} >
     <ListItemButton>
@@ -41,6 +52,15 @@ export const mainListItems = (
     </ListItemButton>
     </Link>
 
+    <Link to={'checkouts'} style={{textDecoration: 'none', color: 'black'}} >
+    <ListItemButton>
+      <ListItemIcon>
+        <PointOfSaleIcon />
+      </ListItemIcon>
+      <ListItemText primary="Checkouts" />
+    </ListItemButton>
+    </Link>
+
     <ListItemButton>
       <ListItemIcon>
         <PeopleIcon />
@@ -52,12 +72,6 @@ export const mainListItems = (
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="Reports" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
     </ListItemButton>
   </React.Fragment>
 );

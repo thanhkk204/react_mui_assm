@@ -1,6 +1,15 @@
 import { Container, Grid, TextField, Select, MenuItem, FormControl, InputLabel, Button, Radio, RadioGroup, FormControlLabel, FormLabel, Typography, Box, Paper } from '@mui/material';
 import { styled } from '@mui/system';
-
+import { useMemo, useState } from 'react';
+import { useForm } from 'react-final-form';
+import { toast } from 'react-toastify';
+import { useCart } from '../context/CartProvider';
+import { useNavigate, useNavigation } from 'react-router-dom';
+type CheckOutType = {
+    name: string,
+    address: string,
+    phone: string,
+}
 const StyledTextField = styled(TextField)({
     '& .MuiOutlinedInput-root': {
         borderRadius: 8,
@@ -55,8 +64,56 @@ const StyledTypography = styled(Typography)({
 const StyledTotalTypography = styled(Typography)({
     color: '#B88E2F', 
 });
-
+ 
 const CheckoutPage = () => {
+    const {cart, setCart,userID} = useCart()
+    const totalPrice = useMemo(()=>{
+        return cart.orderedProduct.reduce((sum, item)=>{
+                 return sum+=item.quantity * item.product_id.price
+        },0)
+    }, [cart])
+    const router = useNavigate()
+    const [formValue, setFormValue] = useState<CheckOutType>({
+        name: '',
+        address: '',
+        phone: ''
+      })
+      const handleChangeFormInput = (e: any)=>{
+        console.log(e)
+        setFormValue(pre=>({...pre, [e.target.name]: e.target.value}))
+      }
+      const handleSubmitForm = async (e: any)=>{
+        if(!formValue.name) return toast.error('firstName must be filled')
+        if(!formValue.address) return toast.error('address must be filled')
+        if(!formValue.phone) return toast.error('phone must be filled')
+        if(cart.orderedProduct.length == 0) return toast.error('At least 1 product in cart')
+        try {
+            const res = await fetch('http://localhost:5000/checkout',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ...formValue,
+                    cartId: cart._id,
+                    orderedProducts: cart.orderedProduct
+                })
+            })
+            const data = await res.json()
+            if(!res.ok) return toast.error(data.message)
+            setCart({
+                _id: "",
+                userId: userID,
+                orderedProduct: [],
+              })
+            toast.success(data.message)
+            router('/')
+        } catch (error) {
+            toast.error('Some thing went wrong')
+        }
+      }
+      console.log(cart)
+    
     return (
         <Container maxWidth="lg">
             <Grid container spacing={3}>
@@ -66,7 +123,7 @@ const CheckoutPage = () => {
                     </StyledTypography>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
-                            <StyledTextField required label="First Name" fullWidth />
+                            <StyledTextField onChange={e=>handleChangeFormInput(e)} name='name' required label="First Name" fullWidth />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <StyledTextField required label="Last Name" fullWidth />
@@ -84,7 +141,7 @@ const CheckoutPage = () => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
-                            <StyledTextField required label="Street address" fullWidth />
+                            <StyledTextField onChange={e=>handleChangeFormInput(e)} name='address' required label="Street address" fullWidth />
                         </Grid>
                         <Grid item xs={12}>
                             <StyledTextField required label="Town / City" fullWidth />
@@ -102,7 +159,7 @@ const CheckoutPage = () => {
                             <StyledTextField required label="ZIP code" fullWidth />
                         </Grid>
                         <Grid item xs={12}>
-                            <StyledTextField required label="Phone" fullWidth />
+                            <StyledTextField onChange={e=>handleChangeFormInput(e)} name='phone' required label="Phone" fullWidth />
                         </Grid>
                         <Grid item xs={12}>
                             <StyledTextField required label="Email address" fullWidth />
@@ -118,17 +175,17 @@ const CheckoutPage = () => {
                             <Typography variant='h6'>Product</Typography>
                             <Typography variant='h6'>Subtotal</Typography>
                         </Box>
-                        <Box display="flex" justifyContent="space-between">
-                            <Typography>Asgaard sofa x 1</Typography>
-                            <Typography>250.00</Typography>
+                        {
+                            cart.orderedProduct.map(item=>(
+                            <Box display="flex" justifyContent="space-between">
+                            <Typography>{item.product_id.title}x {item.quantity}</Typography>
+                            <Typography>{item.quantity * item.product_id.price}</Typography>
                         </Box>
-                        <Box display="flex" justifyContent="space-between" fontWeight="bold">
-                            <Typography>Subtotal</Typography>
-                            <Typography>250.00</Typography>
-                        </Box>
+                            ))
+                        }
                         <Box display="flex" justifyContent="space-between" fontWeight="bold">
                             <Typography>Total</Typography>
-                            <StyledTotalTypography variant="h5">250.00</StyledTotalTypography>
+                            <StyledTotalTypography variant="h5">{totalPrice}</StyledTotalTypography>
                         </Box>
                         <hr />
                         <FormControl component="fieldset" margin="normal">
@@ -141,7 +198,7 @@ const CheckoutPage = () => {
                                 <FormControlLabel value="cod" control={<Radio />} label="Cash On Delivery" />
                             </RadioGroup>
                         </FormControl>
-                        <StyledButton variant="contained" fullWidth>
+                        <StyledButton onClick={e=>handleSubmitForm(e)} variant="contained" fullWidth>
                             Place order
                         </StyledButton>
                     </StyledPaper>

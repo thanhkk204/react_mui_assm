@@ -8,8 +8,8 @@ import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Footer from "../components/Footer";
-import { CartProvider } from "../context/CartProvider";
 import Header from "../components/Header";
+import { CartProvider } from "../context/CartProvider";
 
 type LoginFormParams = {
   email: string;
@@ -61,7 +61,6 @@ const Login = () => {
   };
 
   return (
-    <CartProvider>
       <Box
         sx={{
           backgroundColor: (theme) => theme.palette.background.default,
@@ -69,8 +68,6 @@ const Login = () => {
           width: "100%",
         }}
       >
-        {/* Header */}
-        <Header />
         <Box
           sx={{
             position: "relative",
@@ -127,8 +124,6 @@ const Login = () => {
             </Container>
           </Container>
         </Box>
-        {/* Footer */}
-        <Footer />
         <ToastContainer
           position="top-right"
           autoClose={5000}
@@ -142,7 +137,6 @@ const Login = () => {
           theme="colored"
         />
       </Box>
-    </CartProvider>
   );
 };
 

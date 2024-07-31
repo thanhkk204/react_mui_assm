@@ -26,10 +26,12 @@ import routerProduct from './routers/product.router.js'
 import routerCategory from './routers/category.router.js'
 import routerUser from './routers/user.router.js'
 import cartRouter from './routers/cart.router.js'
+import checoutRouter from './routers/checkout.route.js'
 app.use('/product', routerProduct)
 app.use('/category', routerCategory)
 app.use('/auth', routerUser);
 app.use('/cart', cartRouter);
+app.use('/checkout', checoutRouter);
 
 app.listen(port, (req, res) => {
   connectMongoose();
